@@ -1,0 +1,68 @@
+** Racket essentials
+*** Simple values
+**** Racket values include numbers, booleans, strings, and byte strings
+**** Booleans are #t for true and #f for false. In conditionals, however, all non-#f values are treated as true
+**** Except for an unescaped doublequote or backslash, any Unicode character can appear in a string constant
+*** Definitions and expressions
+**** #lang ‹langname› ‹topform›*
+**** ( define ‹id› ‹expr› ) bind id to the result of expr
+**** ( define ( ‹id› ‹id›* ) ‹expr›+ ) bind id to the function that takes arguments of id*
+**** Racket programmers prefer to avoid side-effects, so a definition usually has just one expression in its body
+*** Indenting codes
+*** Identifiers
+**** Racket’s syntax for identifiers is especially liberal. Excluding the special characters: ( ) [ ] { } " , ' ` ; # | \
+*** Function calls
+**** the syntax of function call is ( ‹id› ‹expr›* )
+**** (id? expr) the ? means judgement whether expr is true
+*** Conditions with if, and, or and cond
+**** ( if ‹expr› ‹expr› ‹expr› ) The first ‹expr› is always evaluated. If it produces a non-#f value, then the second ‹expr› is evaluated for the result of the whole if expression, otherwise the third ‹expr› is evaluated for the result.
+**** ( and ‹expr›* ) ( or ‹expr›* ) and uses short-circuts evaluation,
+*** pairs
+**** In general, the rule for printing a pair is as follows: use the dot notation unless the dot is immediately followed by an open parenthesis
+**** A list prints with a quote mark before it, but if an element of a list is itself a list, then no quote mark is printed for the inner list
+**** In the same way that quote for a list automatically applies itself to nested lists, quote on a parenthesized sequence of identifiers automatically applies itself to the identifiers to create a list of symbols
+**** The syntax of Racket is not defined directly in terms of character streams. Instead, the syntax is determined by two layers:
+     1. a reader layer, which turns a sequence of characters into lists, symbols, and other constants; and
+     2. an expander layer, which processes the lists, symbols, and other constants to parse them as an expression.
+
+** Built-in Datatypes
+*** Booleans
+    #t or #f, boolean? check whether value is true or false.
+*** Numbers
+**** a racket number is exact or inexact;
+        * exact: integer, rational, complex number with exact real and imaginary parts;
+        * inexact: an IEEE floating point, a complex number with read and imaginary parts that are IEEE floating representation.
+**** Computations that involve an inexact number produce inexact results
+**** Inexact results are also produced by procedures such as sqrt, log, and sin when an exact result would require representing real numbers that are not rational
+****  The number categories integer, rational, real (always rational), and complex are defined in the usual way, and are recognized by the procedures integer?, rational?, real?, and complex?, in addition to the generic number?.
+**** The = procedure compares numbers for numerical equality. If it is given both inexact and exact numbers to compare, it essentially converts the inexact numbers to exact before comparing. The eqv? (and therefore equal?) procedure, in contrast, compares numbers considering both exactness and numerical equality.
+**** Beware of comparisons involving inexact numbers, which by their nature can have surprising behavior.
+*** Characters
+**** The char->integer and integer->char procedures convert between scalar-value numbers and the corresponding character
+**** A printable character normally prints as #\ followed by the represented character. An unprintable character normally prints as #\u followed by the scalar value as hexadecimal number.
+**** The char=? procedure compares two or more characters, and char-ci=? compares characters ignoring case. The eqv? and equal? procedures behave the same as char=? on characters; use char=? when you want to more specifically declare that the values being compared are characters.
+*** Strings
+**** A string is a fixed-length array of characters
+**** doublequote and backslash characters within the string are escaped with backslashes
+**** A string can be mutable or immutable; strings written directly as expressions are immutable, but most other strings are mutable.
+**** The make-string procedure creates a mutable string given a length and optional fill character. The string-ref procedure accesses a character from a string (with 0-based indexing); the string-set! procedure changes a character in a mutable string.
+**** String ordering and case operations are generally locale-independent; that is, they work the same for all users. A few locale-dependent operations are provided that allow the way that strings are case-folded and sorted to depend on the end-user’s locale.
+*** Bytes and byte string
+**** A byte is an exact integer between 0 and 255, inclusive.
+**** A byte string is similar to a string—see Strings (Unicode)—but its content is a sequence of bytes instead of characters
+**** a byte string prints like the ASCII decoding of the byte string, but prefixed with a `#`.
+**** Technically, display of a normal (i.e,. character) string prints the UTF-8 encoding of the string to the current output port, since output is ultimately defined in terms of bytes
+**** display of a byte string, however, writes the raw bytes with no encoding. Along the same lines, when this documentation shows output, it technically shows the UTF-8-decoded form of the output.
+**** For explicitly converting between strings and byte strings, Racket supports three kinds of encodings directly: UTF-8, Latin-1, and the current locale’s encoding. General facilities for byte-to-byte conversions
+*** Symbols
+**** A symbol is an atomic value that prints like an identifier preceded with '.
+****  calling the string->symbol procedure, or reading a syntactic identifier, produces an interned symbol.
+**** interned symbols can be cheaply compared with eq? (and thus eqv? or equal?), they serve as a convenient values to use for tags and enumerations.
+**** Symbols are case-sensitive.
+**** # is disallowed only at the beginning of a symbol, and then only if not followed by %; otherwise, # is allowed, too. Also, . by itself is not a symbol.
+**** Whitespace or special characters can be included in an identifier by quoting them with | or \. These quoting mechanisms are used in the printed form of identifiers that contain special characters or that might otherwise look like numbers.
+**** The write function prints a symbol without a ' prefix. The display form of a symbol is the same as the corresponding string.
+**** The gensym and string->uninterned-symbol procedures generate fresh uninterned symbols that are not equal (according to eq?) to any previously interned or uninterned symbol. Uninterned symbols are useful as fresh tags that cannot be confused with any other value.
+*** Keywords
+**** A keyword value is similar to a symbol (see Symbols), but its printed form is prefixed with #:.
+**** More precisely, a keyword is analogous to an identifier; in the same way that an identifier can be quoted to produce a symbol, a keyword can be quoted to produce a value.
