@@ -66,3 +66,9 @@
 *** Keywords
 **** A keyword value is similar to a symbol (see Symbols), but its printed form is prefixed with #:.
 **** More precisely, a keyword is analogous to an identifier; in the same way that an identifier can be quoted to produce a symbol, a keyword can be quoted to produce a value.
+*** Expressions and Definitions
+**** A module-level define can bind only identifiers that are not already defined or required into the module.
+**** Even identifiers like define and lambda get their meanings from bindings, though they have transformer bindings (which means that they indicate syntactic forms) instead of value bindings.
+**** A Racket expression normally produces a single result, but some expressions can produce multiple results.
+**** Multiple-valued functions can be implemented in terms of the values function, which takes any number of values and returns them as the results.
+**** A let form binds a set of identifiers, each to the result of some expression, for use in the let body: (let ([id expr] ...) body ...+), The ids are bound “in parallel.” That is, no id is bound in the right-hand side expr for any id, but all are available in the body
