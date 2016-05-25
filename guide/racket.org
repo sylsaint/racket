@@ -72,3 +72,4 @@
 **** A Racket expression normally produces a single result, but some expressions can produce multiple results.
 **** Multiple-valued functions can be implemented in terms of the values function, which takes any number of values and returns them as the results.
 **** A let form binds a set of identifiers, each to the result of some expression, for use in the let body: (let ([id expr] ...) body ...+), The ids are bound “in parallel.” That is, no id is bound in the right-hand side expr for any id, but all are available in the body
+**** Occasionally, the parallel nature of let bindings is convenient for swapping or rearranging a set of bindings
