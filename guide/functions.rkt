@@ -59,3 +59,67 @@
       [myself "sun"]
       [I "yonglu"])
   (string-append me " " myself " " I))
+
+(let ([me "sun"]
+      [you "ling"])
+  (let ([me you]
+        [you me])
+    (list me you)))
+
+;sequence
+(define (print-triangle height)
+  (if (zero? height)
+      (void)
+      (begin
+        (display (make-string height #\*))
+        (newline)
+        (print-triangle (sub1 height)))))
+(print-triangle 10)
+
+; begin0 (begin0 expr ...+) return the result of the first expression
+(define (long-times thunk)
+  (printf "Start: ~s\n" (current-inexact-milliseconds))
+  (begin0
+    (thunk)
+    (printf "End: ~s\n" (current-inexact-milliseconds))))
+
+(long-times (lambda () (sleep 0.1) 0))
+(long-times (lambda () (values 1 2)))
+
+; when and unless
+; (when test-expr then-body ...+) #t
+; (unless test-expr then-body ...+) #f
+
+(define (print-triangle-unless height)
+  (unless (zero? height)
+    (display (make-string height #\*))
+    (newline)
+    (print-triangle-unless (sub1 height))))
+
+(print-triangle-unless 5)
+
+(define (list-names lst)
+  (if (null? (cdr lst))
+      (printf "~a.\n" (car lst))
+      (begin
+        (printf "~a, " (car lst))
+        (when (null? (cdr (cdr lst)))
+          (printf "and "))
+        (list-names (cdr lst)))))
+
+(list-names '("red" "blue" "green"))
+
+; assignment: set!  (set! id expr)
+
+(define greeted null)
+(define (greet name)
+  (set! greeted (cons name greeted))
+  (string-append "hello, " name))
+
+(greet "red")
+(greet "blue")
+(greet "green")
+(car greeted)
+(newline)
+
+; guidelines for assignment
