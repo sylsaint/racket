@@ -150,3 +150,34 @@ salutation
 
 ; The quote form is more typically used for symbols and lists, which have other meanings (identifiers, function
 ; calls, etc.) when not quoted.
+
+(define location (make-parameter "here"))
+(define param (make-parameter "yellow"))
+
+(parameterize ([location "there"])
+  (location))
+
+(parameterize ([param "red"])
+  (list (param)
+        (parameterize ([param "green"])
+          (param))
+        (param)))
+
+; The parameterize form is not a binding form like let; each use of location above refers
+; directly to the original definition.
+
+(define (could-would?)
+  (and (not (equal? (location) "here"))
+       (not (equal? (location) "there"))))
+
+(could-would?)
+
+(parameterize ([location "in a place"])
+  (could-would?))
+
+; If a use of a parameter is textually inside the body of a parameterize but not evaluated before
+; the parameterize form produces a value, then the use does not see the value installed by the parameterize form
+
+(let ([get (parameterize ([location "on a train"])
+             (lambda () (location)))])
+  (get))
