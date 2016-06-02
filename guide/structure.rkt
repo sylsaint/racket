@@ -48,5 +48,35 @@
 (struct-info m1)
 
 ; struct comparison
-; A generic equal? comparison automatically recurs on the fields of a transparent structure type, but equal? defaults to mere instance identity for opaque structure types
+; A generic equal? comparison automatically recurs on the fields of a transparent structure type, but equal?
+; defaults to mere instance identity for opaque structure types
 (equal? m1 m1)
+
+; Structure Type Generativity
+
+; Each time that a struct form is evaluated,it generates a structure type that is
+; distinct from all existing structure types, even if some other structure type has the same name and fields.
+
+(define (add-bigger-fish lst)
+  (struct fish (size) #:transparent)
+  (cond [(null? lst) (list (fish 1))]
+        [else (cons (fish (* 2 (fish-size (car lst))))
+                    lst)]))
+
+(add-bigger-fish null)
+
+; A prefab (“previously fabricated”) structure type is a built-in type that is known to the Racket printer
+; and expression reader. Infinitely many such types exist, and they are indexed by name, field count, supertype,
+; and other such details. The printed form of a prefab structure is similar to a vector, but it starts #s instead of
+; just #, and the first element in the printed form is the prefab structure type’s name.
+
+(define lunch '#s(sprout bean))
+(struct sprout (kind) #:prefab)
+(sprout? lunch)
+(sprout-kind lunch)
+
+; The field name kind above does not matter for finding the prefab structure type;
+(sprout? #s(sprout bean #f 17))
+
+(struct sprout (kind yummy? count) #:prefab)
+(sprout? #s(sprout bean #f 17))
