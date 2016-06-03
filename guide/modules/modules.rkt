@@ -34,3 +34,19 @@
 ; 6.2 Module Syntax
 
 ; (module name-id initial-module-path decl ...)
+
+; 6.2.3 Submodules
+
+; A module form can be nested within a module, in which case the nested module form declares a submodule.
+; Submodules can be nested within submodules, and a submodule can be referenced directly by a module
+; other than its enclosing module by using a submodule path
+
+; (module* name-id initial-module-path-or-#f decl ...)
+
+; 1. A submodule declared with module can be required by its enclosing module, but the submodule cannot require the enclosing
+;    module or lexically reference the enclosing module’s bindings.
+
+; 2. A submodule declared with module* can require its enclosing module, but the enclosing module cannot require the submodule.
+
+; In addition, a module* form can specify #f in place of an initial-module-path, in which case the submodule sees all of the enclosing
+; module’s bindings—including bindings that are not exported via provide.
