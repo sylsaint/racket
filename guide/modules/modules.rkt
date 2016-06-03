@@ -34,3 +34,7 @@
 ; 6.2 Module Syntax
 
 ; (module name-id initial-module-path decl ...)
+
+; Declaring a module does not immediately evaluate the body definitions and expressions of
+; the module. The module must be explicitly required at the top level to trigger evaluation.
+; After evaluation is triggered once, later requires do not re-evaluate the module body.
