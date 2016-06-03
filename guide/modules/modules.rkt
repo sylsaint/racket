@@ -50,3 +50,7 @@
 
 ; In addition, a module* form can specify #f in place of an initial-module-path, in which case the submodule sees all of the enclosing
 ; module’s bindings—including bindings that are not exported via provide.
+
+; Declaring a module does not immediately evaluate the body definitions and expressions of
+; the module. The module must be explicitly required at the top level to trigger evaluation.
+; After evaluation is triggered once, later requires do not re-evaluate the module body.
