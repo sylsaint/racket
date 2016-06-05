@@ -15,6 +15,16 @@
 ;    form, a PLaneT reference starts like a lib reference with a relative path, but the
 ;    path is followed by information about the producer, package, and version of the
 ;    library. The specified package is downloaded and installed on demand.
+; 8. (file string) -- Refers to a file, where string is a relative or absolute path using the current platform’s conventions.
+;    This form is not portable, and it should not be used when a plain, portable rel-string suffices.
+; 9. (submod base element ...+)
+;            base =	module-path
+; 	 	        |	"."
+;                   | 	".."
+ 	 	 	 	 
+;            element = id
+; 	 	           |	".."
+
 
 (provide tiger)
 (define tiger "animal")
