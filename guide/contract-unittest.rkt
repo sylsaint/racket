@@ -6,4 +6,7 @@
 (newline)
 (deposit 10)
 (balance)
-(f 10)
+; (f 10)
+
+(report-cost 10 100)
+(report-cost "hundreds")

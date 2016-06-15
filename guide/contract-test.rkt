@@ -40,3 +40,17 @@
 
 (require 'bank-server)
 (deposit -10)
+
+; 7.3.5 Contracts for case-lambda
+
+; A function defined with case-lambda might impose different constraints on its arguments depending on how many are provided
+
+(define report-cost
+  (case-lambda
+    [(lo hi) (format "between $~a and $~a" lo hi)]
+    [(desc) (format "~a of dollars" desc)]))
+
+(provide (contract-out
+          [report-cost (case->
+                        (integer? integer? . -> . string?)
+                        (string? . -> . string?))]))
