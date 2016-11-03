@@ -37,3 +37,5 @@
 (define daisy (new picky-fish% [size 20]))
 
 (send daisy get-size)
+
+(provide picky-fish%)
